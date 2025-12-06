@@ -1,0 +1,17 @@
+# Дополнительные параметры
+camera:
+  width: 640
+  height: 480
+  fps: 30
+
+sensors:
+  lidar:
+    range: 10.0
+    points: 360
+  imu:
+    frequency: 100
+    covariance: [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01]
+
+network:
+  hostname: "robot_pc"
+  port: 11311

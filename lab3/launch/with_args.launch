@@ -1,0 +1,38 @@
+<launch>
+    <!-- 
+    Определяем аргументы launch-файла:
+    1. namespace_arg - пространство имен для узлов (по умолчанию: "my_namespace")
+    2. topic_arg - имя топика для общения (по умолчанию: "custom_topic")
+    3. use_talker - запускать ли talker узел (по умолчанию: true)
+    4. use_listener - запускать ли listener узел (по умолчанию: true)
+    -->
+    <arg name="namespace_arg" default="my_namespace" />
+    <arg name="topic_arg" default="custom_topic" />
+    <arg name="use_talker" default="true" />
+    <arg name="use_listener" default="true" />
+
+    <!-- Группа с пространством имен, заданным аргументом -->
+    <group ns="$(arg namespace_arg)">
+        
+        <!-- Узел talker (издатель) с условием запуска -->
+        <node name="talker" 
+              pkg="rospy_tutorials" 
+              type="talker.py" 
+              output="screen"
+              if="$(arg use_talker)">
+            <!-- Маппинг топика chatter на кастомный топик из аргумента -->
+            <remap from="chatter" to="$(arg topic_arg)"/>
+        </node>
+        
+        <!-- Узел listener (подписчик) с условием запуска -->
+        <node name="listener" 
+              pkg="rospy_tutorials" 
+              type="listener.py" 
+              output="screen"
+              if="$(arg use_listener)">
+            <!-- Маппинг топика chatter на кастомный топик из аргумента -->
+            <remap from="chatter" to="$(arg topic_arg)"/>
+        </node>
+        
+    </group>
+</launch>

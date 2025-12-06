@@ -1,0 +1,43 @@
+<launch>
+    <!-- 
+    Пример launch-файла с параметрами
+    Параметры можно устанавливать разными способами
+    -->
+    
+    <!-- 1. Параметры в корневом пространстве имен -->
+    <param name="global_string_param" type="str" value="Hello from global" />
+    <param name="global_int_param" type="int" value="42" />
+    <param name="global_double_param" type="double" value="3.14159" />
+    <param name="global_bool_param" type="bool" value="true" />
+    
+    <!-- 2. YAML структура в параметре -->
+    <param name="pid_controller" command="cat $(find lab3)/config/pid_params.yaml" />
+    
+    <!-- 3. Параметры в группе (будут в пространстве имен) -->
+    <group ns="robot1">
+        <param name="robot_name" type="str" value="TurtleBot1" />
+        <param name="max_velocity" type="double" value="0.5" />
+        
+        <!-- Узел, который будет использовать эти параметры -->
+        <node name="param_demo_node" pkg="rospy_tutorials" type="talker.py" output="screen">
+            <!-- Добавляем кастомный параметр для этого узла -->
+            <param name="publish_rate" type="double" value="2.0" />
+            <remap from="chatter" to="robot1/chatter" />
+        </node>
+    </group>
+    
+    <!-- 4. Еще одна группа с параметрами -->
+    <group ns="robot2">
+        <param name="robot_name" type="str" value="TurtleBot2" />
+        <param name="max_velocity" type="double" value="0.8" />
+        
+        <node name="param_demo_node" pkg="rospy_tutorials" type="listener.py" output="screen">
+            <param name="queue_size" type="int" value="10" />
+            <remap from="chatter" to="robot1/chatter" />
+        </node>
+    </group>
+    
+    <!-- 5. Загрузка параметров из YAML файла -->
+    <rosparam command="load" file="$(find lab3)/config/extra_params.yaml" />
+    
+</launch>

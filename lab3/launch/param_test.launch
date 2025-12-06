@@ -1,0 +1,24 @@
+<launch>
+    <!-- Launch-файл для демонстрации параметров в Python узле -->
+    
+    <node name="param_demo_node" pkg="lab3" type="param_demo.py" output="screen">
+        <!-- Параметры, передаваемые узлу -->
+        <param name="string_param" value="Привет из launch-файла" />
+        <param name="int_param" value="777" />
+        <param name="float_param" value="2.71828" />
+        <param name="bool_param" value="true" />
+        <param name="list_param" value="[10, 20, 30, 40]" />
+        
+        <!-- Глобальный параметр для проверки -->
+        <param name="/global_check_param" value="Доступно глобально" />
+    </node>
+    
+    <!-- Еще один узел в другом пространстве имен -->
+    <group ns="test_ns">
+        <node name="another_param_node" pkg="lab3" type="param_demo.py" output="screen">
+            <param name="string_param" value="Другой namespace" />
+            <param name="int_param" value="999" />
+        </node>
+    </group>
+    
+</launch>
