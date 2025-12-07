@@ -1,0 +1,57 @@
+<launch>
+  <!-- Параметры запуска -->
+  <arg name="rotation_radius" default="1.5" />
+  <arg name="rotation_speed" default="1.0" />
+  <arg name="k_linear" default="1.5" />
+  <arg name="k_angular" default="4.0" />
+  
+  <!-- Запуск симулятора turtlesim -->
+  <node pkg="turtlesim" type="turtlesim_node" name="turtlesim">
+    <param name="background_r" value="50" />
+    <param name="background_g" value="50" />
+    <param name="background_b" value="100" />
+  </node>
+  
+  <!-- Управление первой черепахой с клавиатуры -->
+  <node pkg="turtlesim" type="turtle_teleop_key" name="teleop" output="screen">
+    <remap from="turtle1/cmd_vel" to="/turtle1/cmd_vel" />
+  </node>
+  
+  <!-- Broadcaster для вращающейся морковки вокруг turtle1 -->
+  <node name="rotating_carrot_broadcaster" 
+        pkg="my_carrot" 
+        type="rotating_carrot_broadcaster.py" 
+        output="screen">
+    <param name="turtle_name" value="turtle1" />
+    <param name="rotation_radius" value="$(arg rotation_radius)" />
+    <param name="rotation_speed" value="$(arg rotation_speed)" />
+    <param name="carrot_name" value="rotating_carrot" />
+  </node>
+  
+  <!-- Преследователь (turtle2 гонится за вращающейся морковкой) -->
+  <node name="chase_rotating_carrot" 
+        pkg="my_carrot" 
+        type="chase_rotating_carrot.py" 
+        output="screen">
+    <param name="chaser_name" value="turtle2" />
+    <param name="carrot_name" value="rotating_carrot" />
+    <param name="k_linear" value="$(arg k_linear)" />
+    <param name="k_angular" value="$(arg k_angular)" />
+    <param name="spawn_x" value="3.0" />
+    <param name="spawn_y" value="3.0" />
+  </node>
+  
+  <!-- Дополнительно: Broadcaster для turtle2 (чтобы видеть ее в TF дереве) -->
+  <node name="turtle2_tf_broadcaster" 
+        pkg="turtle_tf" 
+        type="turtle_tf_broadcaster.py">
+    <param name="turtle" value="turtle2" />
+  </node>
+  
+  <!-- Визуализация в rqt_tf_tree -->
+  <node name="tf_tree" 
+        pkg="rqt_tf_tree" 
+        type="rqt_tf_tree" 
+        output="screen" />
+  
+</launch>

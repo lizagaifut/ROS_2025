@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>carrot</name>
+  <version>0.0.1</version>
+  <description>Пакет для изучения TF с черепашками</description>
+
+  <maintainer email="elizaveta@todo.todo">elizaveta</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>turtlesim</build_depend>
+  
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>tf</build_export_depend>
+  <build_export_depend>turtlesim</build_export_depend>
+  
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>turtlesim</exec_depend>
+
+  <export>
+  </export>
+</package>
